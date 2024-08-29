@@ -4,6 +4,19 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "/index.html"],
   prefix: "",
   theme: {
+    fontFamily: {
+      sans: [
+        "PingFang TC",
+        "Roboto",
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji",
+      ],
+    },
     container: {
       center: true,
       padding: "2rem",
