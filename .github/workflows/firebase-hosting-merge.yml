@@ -11,7 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pnpm ci && pnpm build
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        name: Install Node.js
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - run: pnpm install && pnpm build
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
