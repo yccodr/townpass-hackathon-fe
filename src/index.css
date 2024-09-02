@@ -14,13 +14,13 @@
     --primary-foreground: var(--tp-white);
     --secondary: 38 89% 63%;
     --secondary-foreground: var(--tp-white);
-    --muted: var(--tp-grey-100);
+    --muted: var(--tp-gray-100);
     --muted-foreground: var(--foreground);
     --accent: var(--tp-primary-600);
     --accent-foreground: var(--tp-white);
     --destructive: 0 60% 57%;
     --destructive-foreground: var(--tp-white);
-    --border: var(--tp-grey-200);
+    --border: var(--tp-gray-200);
     --input: 200 12% 85%;
     --ring: var(--tp-primary-500);
     --radius: 0.5rem;
@@ -32,8 +32,12 @@
 
     --tp-white: 0 0% 100%;
 
-    --tp-grey-100: 200 12% 90%;
-    --tp-grey-200: 202 12% 81%;
+    --tp-gray-50: 200 12% 95%;
+    --tp-gray-100: 200 12% 90%;
+    --tp-gray-200: 202 12% 81%;
+    --tp-gray-400: 201 12% 61%;
+    --tp-gray-700: 203 11% 31%;
+    --tp-gray-800: 203 12% 21%;
 
     --tp-primary-500: 190 48% 56%;
     --tp-primary-600: 190 38% 44%;

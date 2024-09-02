@@ -1,3 +1,4 @@
+import Search from "@/components/search";
 import TextField from "@/components/text-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -23,9 +24,8 @@ type BookResponse = {
 };
 
 function Index() {
-  const [data, setData] = useState<string>("");
-
-  console.log(data);
+  const [text, setText] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
 
   return (
     <div className="p-2">
@@ -37,12 +37,19 @@ function Index() {
       </div>
 
       <TextField
-        value={data}
-        onChange={setData}
+        value={text}
+        onChange={setText}
         id="test"
         title="Email"
         caption="Email"
         className="mt-20"
+      />
+
+      <Search
+        className="mt-20"
+        placeHolder="Search"
+        value={search}
+        onChange={setSearch}
       />
     </div>
   );

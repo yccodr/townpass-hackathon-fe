@@ -59,6 +59,19 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        gray: {
+          50: "hsl(var(--tp-gray-50))",
+          100: "hsl(var(--tp-gray-100))",
+          200: "hsl(var(--tp-gray-200))",
+          400: "hsl(var(--tp-gray-400))",
+          700: "hsl(var(--tp-gray-700))",
+          800: "hsl(var(--tp-gray-800))",
+        },
+        text: {
+          primary: "hsl(var(--tp-gray-800))",
+          secondary: "hsl(var(--tp-gray-700))",
+          decorative: "hsl(var(--tp-gray-400))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
