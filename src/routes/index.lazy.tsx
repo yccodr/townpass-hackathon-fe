@@ -1,3 +1,4 @@
+import DatePicker from "@/components/date-picker";
 import Search from "@/components/search";
 import TextField from "@/components/text-field";
 import { Button } from "@/components/ui/button";
@@ -42,6 +43,7 @@ function Index() {
   const [search, setSearch] = useState<string>("");
   const [select, setSelect] = useState<string>("");
   const [goblinMode, setGoblinMode] = useState<boolean>(false);
+  const [date, setDate] = useState<Date | undefined>(undefined);
 
   return (
     <div className="p-2 container pb-12">
@@ -135,6 +137,8 @@ function Index() {
         />
         <Label htmlFor="goblin-mode">Goblin Mode</Label>
       </div>
+
+      <DatePicker className="mt-20" date={date} setDate={setDate} />
     </div>
   );
 }
