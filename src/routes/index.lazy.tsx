@@ -19,6 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -28,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -39,6 +41,7 @@ function Index() {
   const [text, setText] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const [select, setSelect] = useState<string>("");
+  const [goblinMode, setGoblinMode] = useState<boolean>(false);
 
   return (
     <div className="p-2 container pb-12">
@@ -121,6 +124,16 @@ function Index() {
       </Select>
       <div className="mt-1 px-1">
         Current Selection: <strong>{select}</strong>
+      </div>
+
+      <div className="flex items-center space-x-2 mt-12">
+        <Switch
+          id="goblin-mode"
+          checked={goblinMode}
+          onCheckedChange={setGoblinMode}
+          variant="destructive"
+        />
+        <Label htmlFor="goblin-mode">Goblin Mode</Label>
       </div>
     </div>
   );
