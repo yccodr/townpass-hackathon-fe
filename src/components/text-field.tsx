@@ -1,7 +1,7 @@
 import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { HTMLInputTypeAttribute } from "react";
 
 interface IProps {
   className?: string;
@@ -11,6 +11,7 @@ interface IProps {
   placeHolder?: string;
   isError?: boolean;
   helperText?: string;
+  type?: HTMLInputTypeAttribute;
 
   value?: string;
   onChange?: (value: string) => void;
@@ -29,7 +30,7 @@ const TextField = (props: IProps) => {
       </Label>
 
       <Input
-        type="email"
+        type={props.type ?? "text"}
         id={props.id}
         placeholder={props.placeHolder}
         isError={props.isError}
