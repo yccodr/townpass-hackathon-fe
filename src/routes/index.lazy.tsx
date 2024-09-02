@@ -1,27 +1,20 @@
 import Search from "@/components/search";
 import TextField from "@/components/text-field";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import useSWR from "swr";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
 });
-
-const authFetcher = (url: string) => fetch(url, {}).then((res) => res.json());
-
-type BookResponse = {
-  kind: string;
-  items: Array<{
-    id: string;
-    volumeInfo: {
-      title: string;
-      description: string;
-    };
-  }>;
-};
 
 function Index() {
   const [text, setText] = useState<string>("");
@@ -53,6 +46,23 @@ function Index() {
         value={search}
         onChange={setSearch}
       />
+
+      <Dialog>
+        <DialogTrigger className="mt-20">
+          <Button size="md" type="button">
+            Open Dialog
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
