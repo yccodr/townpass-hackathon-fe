@@ -9,6 +9,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -21,7 +31,7 @@ function Index() {
   const [search, setSearch] = useState<string>("");
 
   return (
-    <div className="p-2">
+    <div className="p-2 container pb-12">
       <h3 className="font-light">Welcome Home!</h3>
       <div className="flex flex-col gap-2 items-start">
         <Button>Primary</Button>
@@ -48,8 +58,8 @@ function Index() {
       />
 
       <Dialog>
-        <DialogTrigger className="mt-20">
-          <Button size="md" type="button">
+        <DialogTrigger className="mt-20" asChild>
+          <Button size="md" type="button" className="block">
             Open Dialog
           </Button>
         </DialogTrigger>
@@ -63,6 +73,26 @@ function Index() {
           </DialogHeader>
         </DialogContent>
       </Dialog>
+
+      <Drawer>
+        <DrawerTrigger className="mt-20" asChild>
+          <Button size="md" type="button" className="block">
+            Open Drawer
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+            <DrawerDescription>This action cannot be undone.</DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <Button>Submit</Button>
+            <DrawerClose>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }
