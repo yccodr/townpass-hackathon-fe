@@ -9,6 +9,7 @@ interface IProps {
   title: string;
   caption?: string;
   placeHolder?: string;
+  disabled?: boolean;
   isError?: boolean;
   helperText?: string;
   type?: HTMLInputTypeAttribute;
@@ -34,6 +35,7 @@ const TextField = (props: IProps) => {
         id={props.id}
         placeholder={props.placeHolder}
         isError={props.isError}
+        disabled={props.disabled}
         value={props.value ?? ""}
         onChange={(e) => props.onChange?.(e.target.value)}
       />

@@ -42,6 +42,8 @@ function Index() {
         id="test"
         title="Email"
         caption="Email"
+        placeHolder="Email"
+        type="Email"
         className="mt-20"
       />
 
