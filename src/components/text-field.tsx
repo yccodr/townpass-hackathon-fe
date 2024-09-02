@@ -1,6 +1,7 @@
 import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface IProps {
   className?: string;
@@ -10,6 +11,9 @@ interface IProps {
   placeHolder?: string;
   isError?: boolean;
   helperText?: string;
+
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 const TextField = (props: IProps) => {
@@ -23,11 +27,14 @@ const TextField = (props: IProps) => {
       <Label htmlFor={props.id} className="mb-3 px-2.5 font-semibold">
         {props.title}
       </Label>
+
       <Input
         type="email"
         id={props.id}
         placeholder={props.placeHolder}
         isError={props.isError}
+        value={props.value ?? ""}
+        onChange={(e) => props.onChange?.(e.target.value)}
       />
 
       <div className="flex flex-row justify-between">

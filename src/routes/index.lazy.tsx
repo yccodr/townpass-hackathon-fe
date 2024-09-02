@@ -2,6 +2,7 @@ import TextField from "@/components/text-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import useSWR from "swr";
 
 export const Route = createLazyFileRoute("/")({
@@ -22,6 +23,10 @@ type BookResponse = {
 };
 
 function Index() {
+  const [data, setData] = useState<string>("");
+
+  console.log(data);
+
   return (
     <div className="p-2">
       <h3 className="font-light">Welcome Home!</h3>
@@ -31,7 +36,14 @@ function Index() {
         <Button variant="destructive">Destructive</Button>
       </div>
 
-      <TextField id="test" title="Email" caption="Email" className="mt-20" />
+      <TextField
+        value={data}
+        onChange={setData}
+        id="test"
+        title="Email"
+        caption="Email"
+        className="mt-20"
+      />
     </div>
   );
 }
