@@ -17,9 +17,15 @@ import { Route as AppImport } from './routes/app'
 
 // Create Virtual Routes
 
+const SubmitLazyImport = createFileRoute('/submit')()
 const ComponentsLazyImport = createFileRoute('/components')()
 
 // Create/Update Routes
+
+const SubmitLazyRoute = SubmitLazyImport.update({
+  path: '/submit',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/submit.lazy').then((d) => d.Route))
 
 const ComponentsLazyRoute = ComponentsLazyImport.update({
   path: '/components',
@@ -49,6 +55,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComponentsLazyImport
       parentRoute: typeof rootRoute
     }
+    '/submit': {
+      id: '/submit'
+      path: '/submit'
+      fullPath: '/submit'
+      preLoaderRoute: typeof SubmitLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -57,6 +70,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   AppRoute,
   ComponentsLazyRoute,
+  SubmitLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -68,7 +82,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/app",
-        "/components"
+        "/components",
+        "/submit"
       ]
     },
     "/app": {
@@ -76,6 +91,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/components": {
       "filePath": "components.lazy.tsx"
+    },
+    "/submit": {
+      "filePath": "submit.lazy.tsx"
     }
   }
 }

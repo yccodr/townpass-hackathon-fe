@@ -60,7 +60,7 @@ function Index() {
         id="test"
         title="Email"
         caption="Email"
-        placeHolder="Email"
+        placeholder="Email"
         type="Email"
         className="mt-20"
       />

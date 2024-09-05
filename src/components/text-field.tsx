@@ -8,7 +8,7 @@ interface IProps {
   id: string;
   title: string;
   caption?: string;
-  placeHolder?: string;
+  placeholder?: string;
   disabled?: boolean;
   isError?: boolean;
   helperText?: string;
@@ -33,7 +33,7 @@ const TextField = (props: IProps) => {
       <Input
         type={props.type ?? "text"}
         id={props.id}
-        placeholder={props.placeHolder}
+        placeholder={props.placeholder}
         isError={props.isError}
         disabled={props.disabled}
         value={props.value ?? ""}
