@@ -31,6 +31,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -139,6 +155,34 @@ function Index() {
       </div>
 
       <DatePicker className="mt-20" date={date} setDate={setDate} />
+
+      <div className="w-96 h-96 mt-12 ml-8">
+        <Carousel>
+          <CarouselContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CarouselItem key={index}>
+                <div>
+                  <Card className="w-90 h-90">
+                    <CardHeader>
+                      <CardTitle>Title {index + 1}</CardTitle>
+                      <CardDescription>CardDescription</CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid gap-4">
+                      <span className="text-sm font-semibold">{index + 1}</span>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button variant="outline">Cancel</Button>
+                      <Button>Accept</Button>
+                    </CardFooter>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </div>
     </div>
   );
 }
