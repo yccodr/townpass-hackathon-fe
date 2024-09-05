@@ -156,7 +156,7 @@ function Index() {
 
       <DatePicker className="mt-20" date={date} setDate={setDate} />
 
-      <div className="w-96 h-96 mt-12">
+      <div className="w-96 h-96 mt-12 ml-8">
         <Carousel>
           <CarouselContent>
             {Array.from({ length: 5 }).map((_, index) => (
