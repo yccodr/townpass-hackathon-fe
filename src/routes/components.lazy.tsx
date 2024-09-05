@@ -156,16 +156,24 @@ function Index() {
 
       <DatePicker className="mt-20" date={date} setDate={setDate} />
 
-      <div className="w-48 h-48">
+      <div className="w-96 h-96 mt-12">
         <Carousel>
           <CarouselContent>
             {Array.from({ length: 5 }).map((_, index) => (
               <CarouselItem key={index}>
                 <div>
-                  <Card className="w-40 h-40">
-                    <CardContent className="flex aspect-square items-center justify-center">
-                      <span className="text-xl font-semibold">{index + 1}</span>
+                  <Card className="w-90 h-90">
+                    <CardHeader>
+                      <CardTitle>Title {index + 1}</CardTitle>
+                      <CardDescription>CardDescription</CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid gap-4">
+                      <span className="text-sm font-semibold">{index + 1}</span>
                     </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button variant="outline">Cancel</Button>
+                      <Button>Accept</Button>
+                    </CardFooter>
                   </Card>
                 </div>
               </CarouselItem>
