@@ -13,40 +13,40 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AppImport } from './routes/app'
 
 // Create Virtual Routes
 
-const AboutLazyImport = createFileRoute('/about')()
-const IndexLazyImport = createFileRoute('/')()
+const ComponentsLazyImport = createFileRoute('/components')()
 
 // Create/Update Routes
 
-const AboutLazyRoute = AboutLazyImport.update({
-  path: '/about',
+const ComponentsLazyRoute = ComponentsLazyImport.update({
+  path: '/components',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/components.lazy').then((d) => d.Route))
 
-const IndexLazyRoute = IndexLazyImport.update({
-  path: '/',
+const AppRoute = AppImport.update({
+  path: '/app',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutLazyImport
+    '/components': {
+      id: '/components'
+      path: '/components'
+      fullPath: '/components'
+      preLoaderRoute: typeof ComponentsLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -55,8 +55,8 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  IndexLazyRoute,
-  AboutLazyRoute,
+  AppRoute,
+  ComponentsLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -67,15 +67,15 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/about"
+        "/app",
+        "/components"
       ]
     },
-    "/": {
-      "filePath": "index.lazy.tsx"
+    "/app": {
+      "filePath": "app.tsx"
     },
-    "/about": {
-      "filePath": "about.lazy.tsx"
+    "/components": {
+      "filePath": "components.lazy.tsx"
     }
   }
 }
