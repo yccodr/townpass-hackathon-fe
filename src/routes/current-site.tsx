@@ -316,7 +316,7 @@ function Site() {
   );
   const headerStore = useHeaderStore();
   const { beaconData } = useBeacon();
-  const notNearBeacon = false && beaconData === null;
+  const notNearBeacon = beaconData === null;
   const { user, isLoading: isUserLoading } = useUser();
 
   useEffect(() => {
