@@ -39,7 +39,7 @@ export const useUser = () => {
     setIsLoading(true);
     flutterObject.addEventListener("message", onMessage);
 
-    flutterObject.postMessage("userinfo");
+    flutterObject.postMessage(JSON.stringify({ name: "userinfo" }));
     flutterObject.removeEventListener("message", onMessage);
     setIsLoading(false);
   }, []);
