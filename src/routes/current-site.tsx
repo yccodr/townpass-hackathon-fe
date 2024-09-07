@@ -25,110 +25,83 @@ export const Route = createFileRoute("/current-site")({
   component: Site,
 });
 
-const mockTempleFetcher = async (_: string) => {
-  return {
-    type: "temple",
-    id: 1,
-    name: "龍山寺",
-    progress: 2,
-    total: 10,
-    mainBadge: {
-      icon: "/assets/temple-1.jpg",
-      description: "從行天宮走到外太空",
-      acquired: true,
-    },
-    subBadges: [
-      {
-        icon: "/assets/temple-1.jpg",
-        description: "從行天宮走到外太空",
-        acquired: true,
-      },
-      {
-        icon: "/assets/temple-2.png",
-        description: "我是一個台灣人",
-        acquired: false,
-      },
-    ],
-  } satisfies Site;
-};
+// const mockSportFetcher = async (_: string) => {
+//   return {
+//     type: "sport",
+//     id: 1,
+//     name: "Taipei Dome",
+//     location: "台北市信義區忠孝東路四段515號",
+//     image: "/assets/dome.jpg",
+//     events: [
+//       {
+//         name: "2024 CPBL All Stars",
+//         description: "中華職棒明星賽",
+//         subEvents: [
+//           {
+//             name: "Meet Fubon Angles!",
+//             acquire: false,
+//           },
+//           {
+//             name: "Meet Passion Sister!",
+//             acquire: true,
+//           },
+//         ],
+//       },
+//       {
+//         name: "0921 W vs B",
+//         description: "[CPBL] Dragon vs Brothers - 周思齊引退賽",
+//         subEvents: [
+//           {
+//             name: "Hit",
+//             acquire: false,
+//           },
+//           {
+//             name: "Homerun",
+//             acquire: false,
+//           },
+//         ],
+//       },
+//     ],
+//   } satisfies Site;
+// };
 
-const mockSportFetcher = async (_: string) => {
-  return {
-    type: "sport",
-    id: 1,
-    name: "Taipei Dome",
-    location: "台北市信義區忠孝東路四段515號",
-    image: "/assets/dome.jpg",
-    events: [
-      {
-        name: "2024 CPBL All Stars",
-        description: "中華職棒明星賽",
-        subEvents: [
-          {
-            name: "Meet Fubon Angles!",
-            acquire: false,
-          },
-          {
-            name: "Meet Passion Sister!",
-            acquire: true,
-          },
-        ],
-      },
-      {
-        name: "0921 W vs B",
-        description: "[CPBL] Dragon vs Brothers - 周思齊引退賽",
-        subEvents: [
-          {
-            name: "Hit",
-            acquire: false,
-          },
-          {
-            name: "Homerun",
-            acquire: false,
-          },
-        ],
-      },
-    ],
-  } satisfies Site;
-};
-
-const mockArtFetcher = async (_: string) => {
-  return {
-    type: "art",
-    id: 1,
-    name: "國立故宮博物院",
-    location: "",
-    image: "/assets/national-palace.jpeg",
-    events: [
-      {
-        name: "公主駕到！",
-        description: "清代文獻中的公主身影",
-        subEvents: [
-          {
-            name: "皇帝的女兒",
-            acquire: true,
-          },
-          {
-            name: "家當大開箱",
-            acquire: true,
-          },
-          {
-            name: "聯姻任務",
-            acquire: false,
-          },
-          {
-            name: "說再見太匆匆",
-            acquire: false,
-          },
-          {
-            name: "結語：回望公主",
-            acquire: false,
-          },
-        ],
-      },
-    ],
-  } satisfies Site;
-};
+// const mockArtFetcher = async (_: string) => {
+//   return {
+//     type: "art",
+//     id: 1,
+//     name: "國立故宮博物院",
+//     location: "",
+//     image: "/assets/national-palace.jpeg",
+//     events: [
+//       {
+//         name: "公主駕到！",
+//         description: "清代文獻中的公主身影",
+//         subEvents: [
+//           {
+//             name: "皇帝的女兒",
+//             acquire: true,
+//           },
+//           {
+//             name: "家當大開箱",
+//             acquire: true,
+//           },
+//           {
+//             name: "聯姻任務",
+//             acquire: false,
+//           },
+//           {
+//             name: "說再見太匆匆",
+//             acquire: false,
+//           },
+//           {
+//             name: "結語：回望公主",
+//             acquire: false,
+//           },
+//         ],
+//       },
+//     ],
+//   } satisfies Site;
+// };
 
 interface SiteSportPageProps {
   site: SiteSport;
@@ -338,7 +311,7 @@ function SiteTemplePage({ site }: SiteTemplePageProps) {
 }
 
 function Site() {
-  const { data: site, isLoading } = useSWR<SiteTemple>(
+  const { data: site, isLoading } = useSWR<Site>(
     "https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/beacon?mm=1&id=1"
   );
   const headerStore = useHeaderStore();
@@ -378,7 +351,7 @@ function Site() {
 
   console.log("site", site);
 
-  switch (site?.type ?? "temple") {
+  switch (site?.type) {
     case "temple":
       return <SiteTemplePage site={site} />;
 
