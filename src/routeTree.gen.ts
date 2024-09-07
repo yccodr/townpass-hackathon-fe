@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as CurrentSiteImport } from './routes/current-site'
 
 // Create Virtual Routes
 
@@ -31,10 +32,22 @@ const BadgesLazyRoute = BadgesLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/badges.lazy').then((d) => d.Route))
 
+const CurrentSiteRoute = CurrentSiteImport.update({
+  path: '/current-site',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/current-site': {
+      id: '/current-site'
+      path: '/current-site'
+      fullPath: '/current-site'
+      preLoaderRoute: typeof CurrentSiteImport
+      parentRoute: typeof rootRoute
+    }
     '/badges': {
       id: '/badges'
       path: '/badges'
@@ -55,6 +68,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
+  CurrentSiteRoute,
   BadgesLazyRoute,
   ComponentsLazyRoute,
 })
@@ -67,9 +81,13 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/current-site",
         "/badges",
         "/components"
       ]
+    },
+    "/current-site": {
+      "filePath": "current-site.tsx"
     },
     "/badges": {
       "filePath": "badges.lazy.tsx"

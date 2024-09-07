@@ -4,11 +4,15 @@ import Header from "@/components/header";
 import Providers from "../providers";
 
 export const Route = createRootRoute({
-  component: () => (
+  component: Root,
+});
+
+function Root() {
+  return (
     <Providers>
       <Header />
       <Outlet />
       <TanStackRouterDevtools />
     </Providers>
-  ),
-});
+  );
+}

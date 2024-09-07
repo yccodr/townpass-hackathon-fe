@@ -1,6 +1,5 @@
 export type Badge = {
-  id: number;
-  name: string;
+  icon: string;
   description: string;
-  obtainedAt: Date;
+  acquired?: boolean;
 };

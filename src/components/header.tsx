@@ -3,9 +3,11 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Badge, HomeIcon, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useHeaderStore } from "@/lib/hooks/header";
 
 function Header() {
   const router = useRouterState();
+  const headerStore = useHeaderStore();
 
   return (
     <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
@@ -20,7 +22,7 @@ function Header() {
           <SheetContent side="left" className="sm:max-w-xs">
             <nav className="grid gap-6 text-lg font-normal">
               <Link
-                to="/"
+                to="/current-site"
                 className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
               >
                 <HomeIcon className="h-5 w-5 transition-all group-hover:scale-110" />
@@ -49,6 +51,8 @@ function Header() {
             </nav>
           </SheetContent>
         </Sheet>
+
+        <div className="font-bold text-lg">{headerStore.title}</div>
       </header>
     </div>
   );
