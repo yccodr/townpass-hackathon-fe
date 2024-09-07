@@ -7,12 +7,19 @@ import { useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import Badge from "@/components/badge";
 import { useBeacon } from "@/lib/hooks/beacon";
-import { Radio } from "lucide-react";
+import { ExternalLink, Radio, Route as RouteIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import AppleFadeIn from "@/components/animation/apple-fade-in";
 import { useUser } from "@/lib/hooks/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/current-site")({
   component: Site,
@@ -108,11 +115,52 @@ interface SiteTemplePageProps {
 }
 function SiteTemplePage({ site }: SiteTemplePageProps) {
   return (
-    <div className="px-5 container">
+    <div className="px-5 container pb-32">
       <div className="mb-4">
         <AppleFadeIn>
-          <img src={site.mainBadge.icon} className="rounded-lg" />
+          <img
+            src={`/assets/${site.mainBadge.iconPath}.jpg`}
+            className="rounded-lg"
+          />
         </AppleFadeIn>
+      </div>
+
+      <div className="grid grid-cols-2 mx-4 my-6 place-items-center">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex flex-col gap-1 place-items-center"
+            >
+              <RouteIcon className="h-5 w-5" />
+              <strong className="text-sm">參拜路線</strong>
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent className="p-4">
+            <DialogHeader className="flex gap-1 place-items-center">
+              <strong>參拜路線</strong>
+            </DialogHeader>
+
+            {site.mainBadge.description.WorshipOrder.split(" ").map(
+              (line, index) => (
+                <p key={index} className="text-sm">
+                  {line}
+                </p>
+              )
+            )}
+          </DialogContent>
+        </Dialog>
+
+        <a href={site.mainBadge.description.LinkRef} target="_blank">
+          <Button
+            variant="ghost"
+            className="flex flex-col gap-1 place-items-center"
+          >
+            <ExternalLink className="h-5 w-5" />
+            <span className="text-sm">參考連結</span>
+          </Button>
+        </a>
       </div>
 
       <div className="flex gap-4 place-items-center justify-between">
@@ -139,8 +187,8 @@ function SiteTemplePage({ site }: SiteTemplePageProps) {
           }}
         >
           <ul className="flex w-max space-x-4 my-2 mx-5">
-            {site?.subBadges.map((badge) => (
-              <li key={badge.description} className="max-w-48">
+            {site?.subBadges.map((badge, index) => (
+              <li key={index} className="max-w-48">
                 <Badge badge={badge} />
               </li>
             ))}
@@ -149,14 +197,15 @@ function SiteTemplePage({ site }: SiteTemplePageProps) {
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
+
+      <div className="px-1">{site.mainBadge.description.History}</div>
     </div>
   );
 }
 
 function Site() {
-  const { data: site, isLoading } = useSWR<Site>(
-    "/api/v1/site",
-    mockSportFetcher
+  const { data: site, isLoading } = useSWR<SiteTemple>(
+    "https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/beacon?mm=1&id=1"
   );
   const headerStore = useHeaderStore();
   const { beaconData } = useBeacon();
@@ -193,7 +242,9 @@ function Site() {
 
   if (site === undefined) return <div>No site</div>;
 
-  switch (site?.type) {
+  console.log("site", site);
+
+  switch (site?.type ?? "temple") {
     case "temple":
       return <SiteTemplePage site={site} />;
 

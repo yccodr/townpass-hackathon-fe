@@ -27,7 +27,7 @@ type User = {
 
 export const useUser = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onMessage = (ev: any) => {
     const result: { data: User } = JSON.parse(ev.data).data;
@@ -36,9 +36,15 @@ export const useUser = () => {
   };
 
   useEffect(() => {
+    try {
+      // check if flutterObject is available
+      flutterObject;
+    } catch (e) {
+      return;
+    }
+
     setIsLoading(true);
     flutterObject.addEventListener("message", onMessage);
-
     flutterObject.postMessage(JSON.stringify({ name: "userinfo" }));
     flutterObject.removeEventListener("message", onMessage);
     setIsLoading(false);

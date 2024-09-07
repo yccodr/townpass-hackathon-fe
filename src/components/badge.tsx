@@ -13,14 +13,13 @@ function BadgeComponent(props: IProps) {
   return (
     <Card className="h-full border-none">
       <CardContent className="p-0 flex flex-col gap-3 place-items-center">
-        {/* <h1>{props.badge.icon}</h1> */}
         <img
-          src={props.badge.icon}
+          src={`/assets/${props.badge.iconPath}.jpg`}
           className={cn("rounded-lg", {
             grayscale: props.badge.acquired === false,
           })}
         />
-        <p className="font-semibod">{props.badge.description}</p>
+        <p className="font-semibod">{props.badge.description.MainDeity}</p>
       </CardContent>
     </Card>
   );
