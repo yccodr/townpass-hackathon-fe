@@ -6,6 +6,7 @@ import { useHeaderStore } from "@/lib/hooks/header";
 import { useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import Badge from "@/components/badge";
+import { useBeacon } from "@/lib/hooks/beacon";
 
 export const Route = createFileRoute("/current-site")({
   component: Site,
@@ -40,6 +41,7 @@ const mockFetcher = async (_: string) => {
 function Site() {
   const { data: site, isLoading } = useSWR<Site>("/api/v1/site", mockFetcher);
   const headerStore = useHeaderStore();
+  const { beaconData } = useBeacon();
 
   useEffect(() => {
     headerStore.setTitle(site?.name ?? "");
@@ -72,6 +74,16 @@ function Site() {
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
+
+      {beaconData !== null ? (
+        <div>
+          <div>UUID: {beaconData.uuid}</div>
+          <div>Major: {beaconData.major}</div>
+          <div>Minor: {beaconData.minor}</div>
+        </div>
+      ) : (
+        <div>No beacon data</div>
+      )}
     </div>
   );
 }
