@@ -20,18 +20,23 @@ function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="sm:max-w-xs">
-            <nav className="grid gap-6 text-lg font-normal">
+            <nav className="grid gap-6 text-lg font-normal mt-12">
               <Link
                 to="/current-site"
-                className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
               >
-                <HomeIcon className="h-5 w-5 transition-all group-hover:scale-110" />
+                <HomeIcon
+                  strokeWidth={
+                    router.location.pathname === "/current-site" ? 3 : 2
+                  }
+                  className="h-5 w-5"
+                />
                 <span
-                  className={cn("sr-only", {
-                    "font-bold": router.location.pathname === "/",
+                  className={cn({
+                    "font-bold": router.location.pathname === "/current-site",
                   })}
                 >
-                  Home
+                  當前位置
                 </span>
               </Link>
 
@@ -39,13 +44,16 @@ function Header() {
                 to="/badges"
                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
               >
-                <Badge className="h-5 w-5" />
+                <Badge
+                  strokeWidth={router.location.pathname === "/badges" ? 3 : 2}
+                  className="h-5 w-5"
+                />
                 <span
                   className={cn({
                     "font-bold": router.location.pathname === "/badges",
                   })}
                 >
-                  Badges
+                  所有徽章
                 </span>
               </Link>
             </nav>
