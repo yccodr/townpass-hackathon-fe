@@ -19,6 +19,8 @@ export type SiteSport = {
     description: string;
     subEvents: {
       name: string;
+      color: string;
+      acquire: boolean;
     }[];
   }[];
 };

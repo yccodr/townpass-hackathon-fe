@@ -11,6 +11,8 @@ import { Radio } from "lucide-react";
 import { motion } from "framer-motion";
 import AppleFadeIn from "@/components/animation/apple-fade-in";
 import { useUser } from "@/lib/hooks/user";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/current-site")({
   component: Site,
@@ -50,11 +52,18 @@ const mockSportFetcher = async (_: string) => {
     name: "Taipei Dome",
     events: [
       {
-        name: "2024 CPBL AllStars",
+        name: "2024 CPBL All Stars",
         description: "2024 CPBL AllStars Game",
         subEvents: [
           {
-            name: "Meet FA!",
+            name: "Meet Fubon Angles!",
+            color: "bg-blue-300",
+            acquire: false,
+          },
+          {
+            name: "Meet Passion Sister!",
+            color: "bg-yellow-300",
+            acquire: true,
           },
         ],
       },
@@ -67,7 +76,31 @@ interface SiteSportPageProps {
 }
 
 function SiteSportPage({ site }: SiteSportPageProps) {
-  return <div className="px-5 container">{site.name}</div>;
+  return (
+    <div className="px-5 container">
+      {site.events.map((value, idx) => {
+        return (
+          <AppleFadeIn key={idx}>
+            <div className="px-5 container">
+              <span className="text-2xl">{value.name}</span>
+              {value.subEvents.map((sub, subIdx) => {
+                return (
+                  <Card
+                    key={subIdx}
+                    className={cn({ "bg-opacity-10": sub.acquire }, sub.color)}
+                  >
+                    <CardContent className="justify-center flex ">
+                      <span className="text-center">{sub.name}</span>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </AppleFadeIn>
+        );
+      })}
+    </div>
+  );
 }
 
 interface SiteTemplePageProps {
