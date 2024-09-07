@@ -8,6 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import Badge from "@/components/badge";
 import { useBeacon } from "@/lib/hooks/beacon";
 import { Radio } from "lucide-react";
+import { motion } from "framer-motion";
+import AppleFadeIn from "@/components/animation/apple-fade-in";
 
 export const Route = createFileRoute("/current-site")({
   component: Site,
@@ -43,7 +45,7 @@ function Site() {
   const { data: site, isLoading } = useSWR<Site>("/api/v1/site", mockFetcher);
   const headerStore = useHeaderStore();
   const { beaconData } = useBeacon();
-  const notNearBeacon = beaconData === null;
+  const notNearBeacon = false && beaconData === null;
 
   useEffect(() => {
     if (notNearBeacon) return;
@@ -76,7 +78,9 @@ function Site() {
   return (
     <div className="px-5 container">
       <div className="mb-4">
-        <img src={site.mainBadge.icon} className="rounded-lg" />
+        <AppleFadeIn>
+          <img src={site.mainBadge.icon} className="rounded-lg" />
+        </AppleFadeIn>
       </div>
 
       <div className="flex gap-4 place-items-center justify-between">
@@ -93,13 +97,23 @@ function Site() {
       </div>
 
       <ScrollArea className="-mx-5">
-        <ul className="flex w-max space-x-4 my-2 mx-5">
-          {site?.subBadges.map((badge) => (
-            <li key={badge.description} className="max-w-48">
-              <Badge badge={badge} />
-            </li>
-          ))}
-        </ul>
+        <motion.div
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1], // Custom ease curve for a more Apple-like feel
+            delay: 0.2, // Short delay before animation starts
+          }}
+        >
+          <ul className="flex w-max space-x-4 my-2 mx-5">
+            {site?.subBadges.map((badge) => (
+              <li key={badge.description} className="max-w-48">
+                <Badge badge={badge} />
+              </li>
+            ))}
+          </ul>
+        </motion.div>
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
