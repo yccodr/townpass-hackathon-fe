@@ -1,8 +1,8 @@
 import { EventBadge } from "@/components/EventBadge";
-import { createFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import type { Badge } from "@/lib/domain/badge";
 
-export const Route = createFileRoute("/home")({
+export const Route = createLazyFileRoute("/badges")({
   component: Home,
 });
 
