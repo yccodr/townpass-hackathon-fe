@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import useSWR from "swr";
-import type { Site, SiteSport, SiteTemple } from "../lib/domain/site";
+import type { Site, SiteSport, SiteTemple, SiteArt } from "../lib/domain/site";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useHeaderStore } from "@/lib/hooks/header";
 import { useEffect } from "react";
@@ -25,52 +25,104 @@ export const Route = createFileRoute("/current-site")({
   component: Site,
 });
 
-// const mockFetcher = async (_: string) => {
-//   return {
-//     type: "temple",
-//     id: 1,
-//     name: "龍山寺",
-//     progress: 2,
-//     total: 10,
-//     mainBadge: {
-//       icon: "/assets/temple-1.jpg",
-//       description: "從行天宮走到外太空",
-//       acquired: true,
-//     },
-//     subBadges: [
-//       {
-//         icon: "/assets/temple-1.jpg",
-//         description: "從行天宮走到外太空",
-//         acquired: true,
-//       },
-//       {
-//         icon: "/assets/temple-2.png",
-//         description: "我是一個台灣人",
-//         acquired: false,
-//       },
-//     ],
-//   } satisfies Site;
-// };
+const mockTempleFetcher = async (_: string) => {
+  return {
+    type: "temple",
+    id: 1,
+    name: "龍山寺",
+    progress: 2,
+    total: 10,
+    mainBadge: {
+      icon: "/assets/temple-1.jpg",
+      description: "從行天宮走到外太空",
+      acquired: true,
+    },
+    subBadges: [
+      {
+        icon: "/assets/temple-1.jpg",
+        description: "從行天宮走到外太空",
+        acquired: true,
+      },
+      {
+        icon: "/assets/temple-2.png",
+        description: "我是一個台灣人",
+        acquired: false,
+      },
+    ],
+  } satisfies Site;
+};
 
 const mockSportFetcher = async (_: string) => {
   return {
     type: "sport",
     id: 1,
     name: "Taipei Dome",
+    location: "台北市信義區忠孝東路四段515號",
+    image: "/assets/dome.jpg",
     events: [
       {
         name: "2024 CPBL All Stars",
-        description: "2024 CPBL AllStars Game",
+        description: "中華職棒明星賽",
         subEvents: [
           {
             name: "Meet Fubon Angles!",
-            color: "bg-blue-300",
             acquire: false,
           },
           {
             name: "Meet Passion Sister!",
-            color: "bg-yellow-300",
             acquire: true,
+          },
+        ],
+      },
+      {
+        name: "0921 W vs B",
+        description: "[CPBL] Dragon vs Brothers - 周思齊引退賽",
+        subEvents: [
+          {
+            name: "Hit",
+            acquire: false,
+          },
+          {
+            name: "Homerun",
+            acquire: false,
+          },
+        ],
+      },
+    ],
+  } satisfies Site;
+};
+
+const mockArtFetcher = async (_: string) => {
+  return {
+    type: "art",
+    id: 1,
+    name: "國立故宮博物院",
+    location: "",
+    image: "/assets/national-palace.jpeg",
+    events: [
+      {
+        name: "公主駕到！",
+        description: "清代文獻中的公主身影",
+        subEvents: [
+          {
+            name: "皇帝的女兒",
+            acquire: true,
+          },
+          {
+            name: "家當大開箱",
+            acquire: true,
+          },
+          {
+            name: "聯姻任務",
+            acquire: false,
+          },
+          {
+            name: "說再見太匆匆",
+            acquire: false,
+          },
+          {
+            name: "結語：回望公主",
+            acquire: false,
           },
         ],
       },
@@ -84,24 +136,106 @@ interface SiteSportPageProps {
 
 function SiteSportPage({ site }: SiteSportPageProps) {
   return (
-    <div className="px-5 container">
+    <div className="px-5 container space-y-5">
+      <img src={site.image} className="rounded-lg" />
       {site.events.map((value, idx) => {
         return (
           <AppleFadeIn key={idx}>
-            <div className="px-5 container">
+            <div className="flex flex-col px-5 container space-y-1">
               <span className="text-2xl">{value.name}</span>
-              {value.subEvents.map((sub, subIdx) => {
-                return (
-                  <Card
-                    key={subIdx}
-                    className={cn({ "bg-opacity-10": sub.acquire }, sub.color)}
-                  >
-                    <CardContent className="justify-center flex ">
-                      <span className="text-center">{sub.name}</span>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+              <span className="text-xs">{value.description}</span>
+
+              <ScrollArea className="-mx-5">
+                <motion.div
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1], // Custom ease curve for a more Apple-like feel
+                    delay: 0.2, // Short delay before animation starts
+                  }}
+                >
+                  <ul className="flex w-max space-x-3 my-2 mx-5">
+                    {value.subEvents.map((sub, subIdx) => {
+                      return (
+                        <Card
+                          key={subIdx}
+                          className={cn(
+                            "bg-primary",
+                            { "bg-gray-50": !sub.acquire },
+                            ""
+                          )}
+                        >
+                          <CardContent className="justify-center flex">
+                            <span className="text-center font-bold">
+                              {sub.name}
+                            </span>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </ul>
+                </motion.div>
+
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            </div>
+          </AppleFadeIn>
+        );
+      })}
+    </div>
+  );
+}
+
+interface SiteArtPageProps {
+  site: SiteArt;
+}
+
+function SiteArtPage({ site }: SiteArtPageProps) {
+  return (
+    <div className="px-5 container space-y-5">
+      <img src={site.image} className="rounded-lg" />
+      {site.events.map((value, idx) => {
+        return (
+          <AppleFadeIn key={idx}>
+            <div className="flex flex-col px-5 container space-y-1">
+              <span className="text-2xl">{value.name}</span>
+              <span className="text-xs">{value.description}</span>
+
+              <ScrollArea className="-mx-5">
+                <motion.div
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1], // Custom ease curve for a more Apple-like feel
+                    delay: 0.2, // Short delay before animation starts
+                  }}
+                >
+                  <ul className="flex w-max space-x-3 my-2 mx-5">
+                    {value.subEvents.map((sub, subIdx) => {
+                      return (
+                        <Card
+                          key={subIdx}
+                          className={cn(
+                            "bg-primary",
+                            { "bg-gray-50": !sub.acquire },
+                            ""
+                          )}
+                        >
+                          <CardContent className="justify-center flex">
+                            <span className="text-center font-bold">
+                              {sub.name}
+                            </span>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </ul>
+                </motion.div>
+
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             </div>
           </AppleFadeIn>
         );
@@ -250,6 +384,9 @@ function Site() {
 
     case "sport":
       return <SiteSportPage site={site} />;
+
+    case "art":
+      return <SiteArtPage site={site} />;
 
     default:
       return <div>No Site</div>;

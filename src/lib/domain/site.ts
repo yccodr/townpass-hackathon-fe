@@ -14,15 +14,32 @@ export type SiteSport = {
   type: "sport";
   id: number;
   name: string;
+  location: string;
+  image: string;
   events: {
     name: string;
     description: string;
     subEvents: {
       name: string;
-      color: string;
       acquire: boolean;
     }[];
   }[];
 };
 
-export type Site = SiteTemple | SiteSport;
+export type SiteArt = {
+  type: "art";
+  id: number;
+  name: string;
+  location: string;
+  image: string;
+  events: {
+    name: string;
+    description: string;
+    subEvents: {
+      name: string;
+      acquire: boolean;
+    }[];
+  }[];
+};
+
+export type Site = SiteTemple | SiteSport | SiteArt;
