@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import useSWR from "swr";
-import type { Site } from "../lib/domain/site";
+import type { Site, SiteSport, SiteTemple } from "../lib/domain/site";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useHeaderStore } from "@/lib/hooks/header";
 import { useEffect } from "react";
@@ -15,66 +15,64 @@ export const Route = createFileRoute("/current-site")({
   component: Site,
 });
 
-const mockFetcher = async (_: string) => {
+// const mockFetcher = async (_: string) => {
+//   return {
+//     type: "temple",
+//     id: 1,
+//     name: "龍山寺",
+//     progress: 2,
+//     total: 10,
+//     mainBadge: {
+//       icon: "/assets/temple-1.jpg",
+//       description: "從行天宮走到外太空",
+//       acquired: true,
+//     },
+//     subBadges: [
+//       {
+//         icon: "/assets/temple-1.jpg",
+//         description: "從行天宮走到外太空",
+//         acquired: true,
+//       },
+//       {
+//         icon: "/assets/temple-2.png",
+//         description: "我是一個台灣人",
+//         acquired: false,
+//       },
+//     ],
+//   } satisfies Site;
+// };
+
+const mockSportFetcher = async (_: string) => {
   return {
+    type: "sport",
     id: 1,
-    name: "龍山寺",
-    progress: 2,
-    total: 10,
-    mainBadge: {
-      icon: "/assets/temple-1.jpg",
-      description: "從行天宮走到外太空",
-      acquired: true,
-    },
-    subBadges: [
+    name: "Taipei Dome",
+    events: [
       {
-        icon: "/assets/temple-1.jpg",
-        description: "從行天宮走到外太空",
-        acquired: true,
-      },
-      {
-        icon: "/assets/temple-2.png",
-        description: "我是一個台灣人",
-        acquired: false,
+        name: "2024 CPBL AllStars",
+        description: "2024 CPBL AllStars Game",
+        subEvents: [
+          {
+            name: "Meet FA!",
+          },
+        ],
       },
     ],
   } satisfies Site;
 };
 
-function Site() {
-  const { data: site, isLoading } = useSWR<Site>("/api/v1/site", mockFetcher);
-  const headerStore = useHeaderStore();
-  const { beaconData } = useBeacon();
-  const notNearBeacon = false && beaconData === null;
+interface SiteSportPageProps {
+  site: SiteSport;
+}
 
-  useEffect(() => {
-    if (notNearBeacon) return;
+function SiteSportPage({ site }: SiteSportPageProps) {
+  return <div className="px-5 container">{site.name}</div>;
+}
 
-    headerStore.setTitle(site?.name ?? "");
-
-    return () => {
-      headerStore.resetTitle();
-    };
-  }, [site]);
-
-  if (notNearBeacon)
-    return (
-      <div className="container h-full grid place-items-center">
-        <div className="flex flex-col place-items-center gap-4 pb-40">
-          <Radio className="h-20 w-20" strokeWidth={1.3} />
-          <p className="text-center">
-            請更靠近印有
-            <br />
-            上面圖示的指示牌
-          </p>
-        </div>
-      </div>
-    );
-
-  if (isLoading) return <div>Loading...</div>;
-
-  if (site === undefined) return <div>No site</div>;
-
+interface SiteTemplePageProps {
+  site: SiteTemple;
+}
+function SiteTemplePage({ site }: SiteTemplePageProps) {
   return (
     <div className="px-5 container">
       <div className="mb-4">
@@ -119,4 +117,53 @@ function Site() {
       </ScrollArea>
     </div>
   );
+}
+
+function Site() {
+  const { data: site, isLoading } = useSWR<Site>(
+    "/api/v1/site",
+    mockSportFetcher
+  );
+  const headerStore = useHeaderStore();
+  const { beaconData } = useBeacon();
+  const notNearBeacon = false && beaconData === null;
+
+  useEffect(() => {
+    if (notNearBeacon) return;
+
+    headerStore.setTitle(site?.name ?? "");
+
+    return () => {
+      headerStore.resetTitle();
+    };
+  }, [site]);
+
+  if (notNearBeacon)
+    return (
+      <div className="container h-full grid place-items-center">
+        <div className="flex flex-col place-items-center gap-4 pb-40">
+          <Radio className="h-20 w-20" strokeWidth={1.3} />
+          <p className="text-center">
+            請更靠近印有
+            <br />
+            上面圖示的指示牌
+          </p>
+        </div>
+      </div>
+    );
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (site === undefined) return <div>No site</div>;
+
+  switch (site?.type) {
+    case "temple":
+      return <SiteTemplePage site={site} />;
+
+    case "sport":
+      return <SiteSportPage site={site} />;
+
+    default:
+      return <div>No Site</div>;
+  }
 }
