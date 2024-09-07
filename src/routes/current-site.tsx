@@ -10,6 +10,7 @@ import { useBeacon } from "@/lib/hooks/beacon";
 import { Radio } from "lucide-react";
 import { motion } from "framer-motion";
 import AppleFadeIn from "@/components/animation/apple-fade-in";
+import { useUser } from "@/lib/hooks/user";
 
 export const Route = createFileRoute("/current-site")({
   component: Site,
@@ -127,6 +128,7 @@ function Site() {
   const headerStore = useHeaderStore();
   const { beaconData } = useBeacon();
   const notNearBeacon = false && beaconData === null;
+  const { user, isLoading: isUserLoading } = useUser();
 
   useEffect(() => {
     if (notNearBeacon) return;
@@ -152,7 +154,9 @@ function Site() {
       </div>
     );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || isUserLoading) return <div>Loading...</div>;
+
+  console.log("You are:", user);
 
   if (site === undefined) return <div>No site</div>;
 
