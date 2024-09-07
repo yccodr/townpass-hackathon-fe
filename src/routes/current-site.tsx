@@ -2,10 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import useSWR from "swr";
 import type { Site } from "../lib/domain/site";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { EventBadge } from "@/components/EventBadge";
 import { useHeaderStore } from "@/lib/hooks/header";
 import { useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
+import Badge from "@/components/badge";
 
 export const Route = createFileRoute("/current-site")({
   component: Site,
@@ -65,7 +65,7 @@ function Site() {
         <ul className="flex w-max space-x-4 p-4">
           {site?.subBadges.map((badge) => (
             <li key={badge.description} className="max-w-48">
-              <EventBadge badge={badge} />
+              <Badge badge={badge} />
             </li>
           ))}
         </ul>

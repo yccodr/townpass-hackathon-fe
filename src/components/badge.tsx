@@ -9,7 +9,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-export function EventBadge(props: IProps) {
+function BadgeComponent(props: IProps) {
   return (
     <Card className="h-full p-4">
       <CardContent className="p-0">
@@ -23,3 +23,5 @@ export function EventBadge(props: IProps) {
     </Card>
   );
 }
+
+export default BadgeComponent;
