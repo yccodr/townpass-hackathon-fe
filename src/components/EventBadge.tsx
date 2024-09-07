@@ -1,36 +1,31 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import React from "react";
+import { Badge } from "@/lib/domain/badge";
 
-import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Badge as BadgeIcon, Clock3 } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
-  IconName?: string;
-  Title?: string;
-  Progress?: Number;
+  badge: Badge;
+  className?: string;
 }
 
-export function EventBadge({ className }: IProps) {
+export function EventBadge(props: IProps) {
   return (
-    <Card className={cn("w-1/2 h-1/4 justify-items-center", className)}>
-      {/* <CardHeader>
-        <CardTitle>Title </CardTitle>
-        <CardDescription>CardDescription</CardDescription>
-      </CardHeader> */}
-      <CardContent className="flex flex-col justify-center justify-items-center align-middle">
-        {/* <span className="text-sm font-semibold">content</span> */}
-        <img src="src/assets/icon.png" className="w-1/2"></img>
-        <CardTitle className="justify-center">Title</CardTitle>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        {/* <Button variant="outline">Cancel</Button> */}
-        {/* <Button>Accept</Button> */}
-      </CardFooter>
-    </Card>
+    <Dialog>
+      <DialogTrigger className="flex flex-col place-items-center gap-4 py-6 border rounded">
+        <BadgeIcon className="w-8 h-8 text-primary" />
+        <div className="flex place-items-center gap-1">
+          <Clock3 className="w-4 h-4 text-primary" />
+          {format(props.badge.obtainedAt, "P")}
+        </div>
+      </DialogTrigger>
+
+      <DialogContent>
+        <h3 className="text-xl font-bold">{props.badge.name}</h3>
+        <p>{props.badge.description}</p>
+        <small>於 {format(props.badge.obtainedAt, "P p")} 取得</small>
+      </DialogContent>
+    </Dialog>
   );
 }
