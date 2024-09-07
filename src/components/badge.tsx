@@ -11,14 +11,16 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function BadgeComponent(props: IProps) {
   return (
-    <Card className="h-full p-4">
-      <CardContent className="p-0">
+    <Card className="h-full border-none">
+      <CardContent className="p-0 flex flex-col gap-3 place-items-center">
         {/* <h1>{props.badge.icon}</h1> */}
         <img
-          src="https://www.ht.org.tw/images/all/logo.png"
-          className={cn({ grayscale: props.badge.acquired })}
+          src={props.badge.icon}
+          className={cn("rounded-lg", {
+            grayscale: props.badge.acquired === false,
+          })}
         />
-        <p>{props.badge.description}</p>
+        <p className="font-semibod">{props.badge.description}</p>
       </CardContent>
     </Card>
   );
