@@ -16,7 +16,7 @@ function BadgeComponent(props: IProps) {
         <img
           src={`/assets/${props.badge.iconPath}.jpg`}
           className={cn("rounded-lg", {
-            grayscale: props.badge.acquired === false,
+            grayscale: props.badge.aquired === false,
           })}
         />
         <p className="font-semibod">{props.badge.description.MainDeity}</p>

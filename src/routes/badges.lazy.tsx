@@ -1,29 +1,19 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-// import type { Badge } from "@/lib/domain/badge";
-// import BadgeComponent from "@/components/badge";
+import BadgeComponent from "@/components/badge";
 import { useEffect } from "react";
 import { useHeaderStore } from "@/lib/hooks/header";
+import useSWR from "swr";
 
 export const Route = createLazyFileRoute("/badges")({
   component: Home,
 });
 
-// const mockBadges: Badge[] = [
-//   {
-//     icon: "/assets/temple-1.jpg",
-//     description: {
-//       History: "從行天宮走到外太空",
-//     },
-//     acquired: true,
-//   },
-//   {
-//     icon: "/assets/temple-2.png",
-//     description: "我是一個台灣人",
-//     acquired: false,
-//   },
-// ];
-
 function Home() {
+  const { data: badges, isLoading } = useSWR<
+    { IconPath: string; LocationName: string }[]
+  >(
+    "https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/collections/1"
+  );
   const headerStore = useHeaderStore();
 
   useEffect(() => {
@@ -34,11 +24,25 @@ function Home() {
     };
   }, []);
 
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="px-5 container grid grid-cols-2 gap-3 place-items-stretch">
-      {/* {mockBadges.map((badge, index) => (
-        <BadgeComponent key={index} badge={badge} />
-      ))} */}
+      {badges?.map((badge) => (
+        <BadgeComponent
+          key={badge.IconPath}
+          badge={{
+            iconPath: badge.IconPath,
+            description: {
+              History: "",
+              InCharge: "",
+              LinkRef: "",
+              MainDeity: badge.LocationName,
+              WorshipOrder: "",
+            },
+          }}
+        />
+      ))}
     </div>
   );
 }

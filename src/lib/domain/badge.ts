@@ -9,5 +9,5 @@ export type Description = {
 export type Badge = {
   iconPath: string;
   description: Description;
-  acquired?: boolean;
+  aquired?: boolean;
 };

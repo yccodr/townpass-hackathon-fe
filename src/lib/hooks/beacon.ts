@@ -7,7 +7,10 @@ export function useBeacon() {
 
   // Function to handle the beacon update event
   const updateBeacon = useCallback((event: BeaconEvent) => {
-    console.log("Beacon update event:", event);
+    console.log("Beacon update event:", JSON.stringify(event.detail));
+    console.log("Beacon update uuid:", event.detail.uuid);
+    console.log("Beacon update major:", event.detail.major);
+    console.log("Beacon update minor:", event.detail.minor);
     setBeaconData(event.detail);
   }, []);
 

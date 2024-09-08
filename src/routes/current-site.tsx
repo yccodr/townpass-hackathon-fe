@@ -167,51 +167,40 @@ function SiteArtPage({ site }: SiteArtPageProps) {
   return (
     <div className="px-5 container space-y-5">
       <img src={site.image} className="rounded-lg" />
-      {site.events.map((value, idx) => {
-        return (
-          <AppleFadeIn key={idx}>
-            <div className="flex flex-col px-5 container space-y-1">
-              <span className="text-2xl">{value.name}</span>
-              <span className="text-xs">{value.description}</span>
+      <AppleFadeIn>
+        <div className="flex flex-col px-5 container space-y-1">
+          <span className="text-2xl">{site.info.event.name}</span>
+          <span className="text-xs">{site.info.event.description}</span>
 
-              <ScrollArea className="-mx-5">
-                <motion.div
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    ease: [0.16, 1, 0.3, 1], // Custom ease curve for a more Apple-like feel
-                    delay: 0.2, // Short delay before animation starts
-                  }}
-                >
-                  <ul className="flex w-max space-x-3 my-2 mx-5">
-                    {value.subEvents.map((sub, subIdx) => {
-                      return (
-                        <Card
-                          key={subIdx}
-                          className={cn(
-                            "bg-primary",
-                            { "bg-gray-50": !sub.acquire },
-                            ""
-                          )}
-                        >
-                          <CardContent className="justify-center flex">
-                            <span className="text-center font-bold">
-                              {sub.name}
-                            </span>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </ul>
-                </motion.div>
+          <ScrollArea className="-mx-5">
+            <motion.div
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: 0.5,
+                ease: [0.16, 1, 0.3, 1], // Custom ease curve for a more Apple-like feel
+                delay: 0.2, // Short delay before animation starts
+              }}
+            >
+              <ul className="flex w-max space-x-3 my-2 mx-5">
+                {site.info.event.subevents.map((sub, subIdx) => {
+                  return (
+                    <Card key={subIdx} className={cn("bg-primary")}>
+                      <CardContent className="justify-center flex">
+                        <span className="text-center font-bold">
+                          {sub.name}
+                        </span>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </ul>
+            </motion.div>
 
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
-            </div>
-          </AppleFadeIn>
-        );
-      })}
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </div>
+      </AppleFadeIn>
     </div>
   );
 }
@@ -315,12 +304,18 @@ const mockType = (mm: number) => {
     case 2:
     case 3:
     case 4:
-      return "temple";
     case 5:
     case 6:
     case 7:
     case 8:
     case 9:
+    case 10:
+      return "temple";
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
       return "art";
   }
 };
@@ -329,14 +324,15 @@ function Site() {
   const headerStore = useHeaderStore();
   const { beaconData } = useBeacon();
   const notNearBeacon = beaconData === null;
+  const DEFAULT_MINOR = 11;
 
   const { data: site, isLoading } = useSWR<Site>(
     notNearBeacon
       ? undefined
-      : `https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/beacon?mm=${beaconData?.minor ?? 0}&id=1`
+      : `https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/beacon?mm=${beaconData?.minor ?? DEFAULT_MINOR}&id=1`
   );
 
-  const siteType = mockType(beaconData?.minor ?? 0);
+  const siteType = mockType(beaconData?.minor ?? DEFAULT_MINOR);
 
   console.log("mm:", beaconData?.minor);
   console.log("siteType:", siteType);

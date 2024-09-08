@@ -28,18 +28,21 @@ export type SiteSport = {
 
 export type SiteArt = {
   type: "art";
-  id: number;
   name: string;
   location: string;
   image: string;
-  events: {
-    name: string;
-    description: string;
-    subEvents: {
+  mainBadge: Badge;
+  info: {
+    event: {
       name: string;
-      acquire: boolean;
-    }[];
-  }[];
+      description: string;
+      subevents: {
+        subeventId: number;
+        name: string;
+        description: string;
+      }[];
+    };
+  };
 };
 
 export type Site = SiteTemple | SiteSport | SiteArt;
