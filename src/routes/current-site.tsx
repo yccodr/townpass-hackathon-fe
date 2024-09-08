@@ -310,14 +310,36 @@ function SiteTemplePage({ site }: SiteTemplePageProps) {
   );
 }
 
+const mockType = (mm: number) => {
+  switch (mm) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      return "temple";
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+      return "art";
+  }
+};
+
 function Site() {
-  const { data: site, isLoading } = useSWR<Site>(
-    "https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/beacon?mm=1&id=1"
-  );
   const headerStore = useHeaderStore();
   const { beaconData } = useBeacon();
   const notNearBeacon = beaconData === null;
   const { user, isLoading: isUserLoading } = useUser();
+
+  const mm = notNearBeacon ? 0 : beaconData?.major << (8 + beaconData?.minor);
+  const { data: site, isLoading } = useSWR<Site>(
+    notNearBeacon
+      ? undefined
+      : `https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/beacon?mm=${mm}`
+  );
+
+  const siteType = mockType(mm);
 
   useEffect(() => {
     if (notNearBeacon) return;
@@ -349,17 +371,15 @@ function Site() {
 
   if (site === undefined) return <div>No site</div>;
 
-  console.log("site", site);
-
-  switch (site?.type) {
+  switch (siteType) {
     case "temple":
-      return <SiteTemplePage site={site} />;
+      return <SiteTemplePage site={site as SiteTemple} />;
 
     case "sport":
-      return <SiteSportPage site={site} />;
+      return <SiteSportPage site={site as SiteSport} />;
 
     case "art":
-      return <SiteArtPage site={site} />;
+      return <SiteArtPage site={site as SiteArt} />;
 
     default:
       return <div>No Site</div>;
