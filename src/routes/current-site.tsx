@@ -10,7 +10,6 @@ import { useBeacon } from "@/lib/hooks/beacon";
 import { ExternalLink, Radio, Route as RouteIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import AppleFadeIn from "@/components/animation/apple-fade-in";
-import { useUser } from "@/lib/hooks/user";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -330,18 +329,16 @@ function Site() {
   const headerStore = useHeaderStore();
   const { beaconData } = useBeacon();
   const notNearBeacon = beaconData === null;
-  const { user, isLoading: isUserLoading } = useUser();
 
-  const mm = notNearBeacon ? 0 : beaconData?.major << (8 + beaconData?.minor);
   const { data: site, isLoading } = useSWR<Site>(
     notNearBeacon
       ? undefined
-      : `https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/beacon?mm=${mm}`
+      : `https://townpass-hackathon-be-443073150939.asia-east1.run.app/api/v1/beacon?mm=${beaconData?.minor ?? 0}&id=1`
   );
 
-  const siteType = mockType(mm);
+  const siteType = mockType(beaconData?.minor ?? 0);
 
-  console.log("mm:", mm);
+  console.log("mm:", beaconData?.minor);
   console.log("siteType:", siteType);
   console.log("notNearBeacon:", notNearBeacon);
 
@@ -369,9 +366,7 @@ function Site() {
       </div>
     );
 
-  if (isLoading || isUserLoading) return <div>Loading...</div>;
-
-  console.log("You are:", user);
+  if (isLoading) return <div>Loading...</div>;
 
   if (site === undefined) return <div>No site</div>;
 
