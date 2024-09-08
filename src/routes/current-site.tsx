@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import useSWR from "swr";
-import type { Site, SiteSport, SiteTemple, SiteArt } from "../lib/domain/site";
+import type { Site, SiteTemple, SiteArt } from "../lib/domain/site";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useHeaderStore } from "@/lib/hooks/header";
 import { useEffect } from "react";
@@ -103,62 +103,62 @@ export const Route = createFileRoute("/current-site")({
 //   } satisfies Site;
 // };
 
-interface SiteSportPageProps {
-  site: SiteSport;
-}
+// interface SiteSportPageProps {
+//   site: SiteSport;
+// }
 
-function SiteSportPage({ site }: SiteSportPageProps) {
-  return (
-    <div className="px-5 container space-y-5">
-      <img src={site.image} className="rounded-lg" />
-      {site.events.map((value, idx) => {
-        return (
-          <AppleFadeIn key={idx}>
-            <div className="flex flex-col px-5 container space-y-1">
-              <span className="text-2xl">{value.name}</span>
-              <span className="text-xs">{value.description}</span>
+// function SiteSportPage({ site }: SiteSportPageProps) {
+//   return (
+//     <div className="px-5 container space-y-5">
+//       <img src={site.image} className="rounded-lg" />
+//       {site.events.map((value, idx) => {
+//         return (
+//           <AppleFadeIn key={idx}>
+//             <div className="flex flex-col px-5 container space-y-1">
+//               <span className="text-2xl">{value.name}</span>
+//               <span className="text-xs">{value.description}</span>
 
-              <ScrollArea className="-mx-5">
-                <motion.div
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    ease: [0.16, 1, 0.3, 1], // Custom ease curve for a more Apple-like feel
-                    delay: 0.2, // Short delay before animation starts
-                  }}
-                >
-                  <ul className="flex w-max space-x-3 my-2 mx-5">
-                    {value.subEvents.map((sub, subIdx) => {
-                      return (
-                        <Card
-                          key={subIdx}
-                          className={cn(
-                            "bg-primary",
-                            { "bg-gray-50": !sub.acquire },
-                            ""
-                          )}
-                        >
-                          <CardContent className="justify-center flex">
-                            <span className="text-center font-bold">
-                              {sub.name}
-                            </span>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </ul>
-                </motion.div>
+//               <ScrollArea className="-mx-5">
+//                 <motion.div
+//                   initial={{ opacity: 0, x: 100 }}
+//                   animate={{ opacity: 1, x: 0 }}
+//                   transition={{
+//                     duration: 0.5,
+//                     ease: [0.16, 1, 0.3, 1], // Custom ease curve for a more Apple-like feel
+//                     delay: 0.2, // Short delay before animation starts
+//                   }}
+//                 >
+//                   <ul className="flex w-max space-x-3 my-2 mx-5">
+//                     {value.subEvents.map((sub, subIdx) => {
+//                       return (
+//                         <Card
+//                           key={subIdx}
+//                           className={cn(
+//                             "bg-primary",
+//                             { "bg-gray-50": !sub.acquire },
+//                             ""
+//                           )}
+//                         >
+//                           <CardContent className="justify-center flex">
+//                             <span className="text-center font-bold">
+//                               {sub.name}
+//                             </span>
+//                           </CardContent>
+//                         </Card>
+//                       );
+//                     })}
+//                   </ul>
+//                 </motion.div>
 
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
-            </div>
-          </AppleFadeIn>
-        );
-      })}
-    </div>
-  );
-}
+//                 <ScrollBar orientation="horizontal" />
+//               </ScrollArea>
+//             </div>
+//           </AppleFadeIn>
+//         );
+//       })}
+//     </div>
+//   );
+// }
 
 interface SiteArtPageProps {
   site: SiteArt;
@@ -341,6 +341,10 @@ function Site() {
 
   const siteType = mockType(mm);
 
+  console.log("mm:", mm);
+  console.log("siteType:", siteType);
+  console.log("notNearBeacon:", notNearBeacon);
+
   useEffect(() => {
     if (notNearBeacon) return;
 
@@ -375,8 +379,8 @@ function Site() {
     case "temple":
       return <SiteTemplePage site={site as SiteTemple} />;
 
-    case "sport":
-      return <SiteSportPage site={site as SiteSport} />;
+    // case "sport":
+    //   return <SiteSportPage site={site as SiteSport} />;
 
     case "art":
       return <SiteArtPage site={site as SiteArt} />;
